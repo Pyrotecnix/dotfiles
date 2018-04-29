@@ -46,23 +46,12 @@ I'm doing all my programming (currently that's Ruby and JavaScript most of the t
 * [`ragel`](http://www.colm.net/open-source/ragel) is a beautiful state machine compiler
 * [`youtube-dl`](https://rg3.github.io/youtube-dl) allows me to download videos for train trips
 * [`docker`](https://www.docker.com) and `docker-compose` because I really wish it would do what I want
-* [`xsel`](http://xsel.sourceforge.net) and `xorg` to access the macOS clipboard
 
 ## Languages I work or play with
 
 * Ruby and JavaScript (Daily)
 * I used Haskell and Prolog quite a lot in University
 * I'm also playing around with Idris, Clojure, Elixir, Rust, Go, and Elm
-
-## Synchronizing the clipboard
-
-In order to access the macOS clipboard from the Vagrant box, I start XQuartz before I run `vagrant ssh`. Through x11 forwarding it will now be able to access the clipboard:
-
-* `xsel -b` will output the content of the clipboard. I can also pipe to it when I want to write to the clipboard.
-* In vim:
-    * When I select something in visual mode, I can copy it to the clipboard with `\c`
-    * In normal mode, I can paste from the clipboard with `\p`
-* In tmux: When I select something in select mode and hit `y` it will be copied to the clipboard
 
 ## Miscellaneous
 

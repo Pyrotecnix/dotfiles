@@ -85,9 +85,11 @@ setopt transient_rprompt
 
 alias ..='cd ..' # Fast one directory up
 alias l='ls -al' # ls as it should be
-function git() { hub $@ } # Github-flavored Git
 function irb() { echo 'Did you mean pry?' && pry $@ } # Use pry instead of IRB
 function mcd() { mkdir -p "$1" && cd "$1"; } # mkdir and cd to it (from oh-my-zsh)
+
+## fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 ## Jump
 # j FOO: jump to a mark named FOO
@@ -106,17 +108,16 @@ compdef _s s
 ## Manipulation of the path and loading stuff
 
 # Ruby
-PATH=$PATH:$HOME/.gem/ruby/2.4.0/bin
-
-# Go
-PATH=$PATH:/usr/lib/go-1.9/bin/go
-PATH=$PATH:$HOME/go/bin
+PATH=$PATH:$HOME/.gem/ruby/2.5.0/bin
 
 # Node
 PATH=$PATH:$HOME/.npm/bin
 
 # Python
 PATH=$PATH:$HOME/.local/bin
+
+# Rust
+# export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 
 ## Plugins
 source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

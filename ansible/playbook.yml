@@ -6,51 +6,34 @@
     email: "lucas@dohmen.io"
     url: "https://lucas.dohmen.io"
 
-    go_version: 1.9
-    nodejs_version: 8.x
-    ruby_version: 2.4
-    compose_version: 1.17.0-rc1
-    compose_checksum: sha1:27f3648e33ee5c8f68c1d05c9e51a5b6669f94bd
+    nodejs_version: 10.x
+    ruby_version: 2.5
 
     apt_keys:
-      A14F4FCA: 'http://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc'
       68576280: 'https://deb.nodesource.com/gpgkey/nodesource.gpg.key'
       0EBFCD88: 'https://download.docker.com/linux/ubuntu/gpg'
     apt_repositories:
-      - 'deb https://packages.erlang-solutions.com/ubuntu xenial contrib'
-      - 'deb https://deb.nodesource.com/node_{{ nodejs_version }} xenial main'
-      - 'deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable'
+      - 'deb https://deb.nodesource.com/node_{{ nodejs_version }} bionic main'
+      # TODO: Replace with bionic when it is available
+      - 'deb https://download.docker.com/linux/ubuntu artful stable'
       - 'ppa:brightbox/ruby-ng'
-      - 'ppa:jonathonf/vim'
-      - 'ppa:gophers/archive'
     apt_packages:
       - asciinema
       - build-essential
       - curl
       - docker-ce
-      - elixir
-      - git
       - gnupg2
       - gnupg-agent
-      - golang-{{ go_version }}
-      - htop
       - jq
       - nodejs
-      - openjdk-9-jdk-headless
-      - python3
+      - openjdk-11-jdk-headless
       - python3-pip 
       - ragel
-      - ruby-switch
       - ruby{{ ruby_version }}
       - ruby{{ ruby_version }}-dev
       - silversearcher-ag
       - tig
-      - tmux
       - tree
-      - vim
-      - wget
-      - xsel
-      - xorg
       - zsh
     vim_packages:
       editorconfig-vim: editorconfig/editorconfig-vim
@@ -59,6 +42,7 @@
       vim-commentary: tpope/vim-commentary
       vim-polyglot: sheerun/vim-polyglot
       vim-surround: tpope/vim-surround
+      vim-racer: racer-rust/vim-racer
       vim-repeat: tpope/vim-repeat
     npm_packages:
       - alex
@@ -73,11 +57,8 @@
       - rubocop
     pip_packages:
       - awscli
-      - awsebcli
       - docker-compose
       - youtube-dl
-    go_packages:
-      - github/hub
     marks:
       c: /home/vagrant/Code
       d: /vagrant
@@ -104,6 +85,7 @@
       lineinfile:
         path: /etc/ssh/sshd_config
         line: 'StreamLocalBindUnlink yes'
+      become: true
 
     - name: Create ~/.gnupg
       file: path=/home/vagrant/.gnupg state=directory mode=0700
@@ -170,6 +152,10 @@
       gem: name={{ item }}
       with_items: "{{ ruby_gems }}"
 
+    - name: NPM Config
+      file:
+        path: /home/vagrant/.npmrc
+        state: touch
     - name: Set NPM author name
       lineinfile:
         path: /home/vagrant/.npmrc
@@ -219,8 +205,8 @@
         mode: +x
       become: true
 
-    - name: Install go packages
-      command: /usr/lib/go-{{ go_version }}/bin/go get github.com/{{ item }}
-      args:
-        creates: /home/vagrant/go/bin/{{ item }}
-      with_items: "{{ go_packages }}"
+    - name: Download fzf
+      git: repo=https://github.com/junegunn/fzf.git dest=/home/vagrant/.fzf
+    # TODO: Only do this if fzf was updated
+    - name: Install fzf
+      command: '/home/vagrant/.fzf/install --key-bindings --completion --no-update-rc --no-bash'
