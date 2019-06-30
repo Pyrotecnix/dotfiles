@@ -2,9 +2,9 @@
 - name: Install the required packages
   hosts: all
   vars:
-    full_name: "Lucas Dohmen"
-    email: "lucas@dohmen.io"
-    url: "https://lucas.dohmen.io"
+    full_name: "David Cunliffe"
+    email: "pyrotecnix@gmail.com"
+    url: https://github.com/Pyrotecnix"
 
     go_version: 1.9
     nodejs_version: 8.x
